@@ -1,0 +1,46 @@
+<!-- templates/dashboard.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chat</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <div id="chat-container">
+    <div id="chat-header">
+      <h2>Chat</h2>
+    </div>
+    <div id="chat-messages">
+      <!-- Les messages seront ajoutés ici par JavaScript -->
+    </div>
+    <div id="chat-input">
+      <input type="text" placeholder="Tapez votre message...">
+      <button>Envoyer</button>
+    </div>
+  </div>
+
+  <script>
+    var socket = io.connect('http://' + document.domain + ':' + location.port);
+    socket.on('message', function(data) {
+        // Ajouter la réponse du modèle LLM à l'interface de chat
+        $('#chat-messages').append('<div class="message received"><p>' + data.text + '</p></div>');
+    });
+
+    $('#chat-input button').click(function() {
+        var message = $('#chat-input input').val();
+        if (message) {
+            // Ajouter le message de l'utilisateur à l'interface de chat
+            $('#chat-messages').append('<div class="message sent"><p>' + message + '</p></div>');
+
+            // Envoyer le message de l'utilisateur au serveur via Socket.IO
+            socket.emit('message', {'text': message});
+
+            // Effacer le champ de saisie
+            $('#chat-input input').val('');
+        }
+    });
+  </script>
+</body>
+</html>

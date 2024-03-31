@@ -1,0 +1,39 @@
+<!-- templates/register.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Inscription</title>
+    <!-- Ajoutez ici votre lien vers les feuilles de style CSS si nécessaire -->
+</head>
+<body>
+    <h2>Inscription</h2>
+    <form action="{{ url_for('auth.register') }}" method="post">
+        <div>
+            <label for="username">Nom d'utilisateur:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div>
+            <label for="password">Mot de passe:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <button type="submit">S'inscrire</button>
+        </div>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash-messages">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+    </form>
+    <p>Vous avez déjà un compte? <a href="{{ url_for('auth.login') }}">Connectez-vous ici</a>.</p>
+</body>
+</html>
